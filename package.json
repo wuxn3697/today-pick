@@ -2,6 +2,11 @@
   "name": "kaibox",
   "version": "1.0.0",
   "type": "module",
+  "author": "xnwu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wuxn3697/today-pick.git"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",

@@ -561,7 +561,7 @@ export default function Home() {
           <span className="brand-mark"><Box size={19} strokeWidth={2.6} /></span>
           <span className="brand-name">拆盲盒</span>
           <span className="brand-dot">·</span>
-          <span className="brand-subtitle">日常选择研究所</span>
+          <span className="brand-subtitle">xnwu · 日常选择研究所</span>
         </a>
         <div className="topbar-note"><span className="mini-sparkle">✦</span> 今天也会有好事发生</div>
       </header>
@@ -671,7 +671,7 @@ export default function Home() {
         )}
       </section>
 
-      <footer className="footer"><span>Designed for indecisive but lovely people.</span><span className="footer-heart">♥</span><span>每一个答案，都只是一个可爱的开始。</span></footer>
+      <footer className="footer"><span>由 xnwu 制作</span><span className="footer-heart">♥</span><span>Designed for indecisive but lovely people.</span></footer>
     </main>
   );
 }

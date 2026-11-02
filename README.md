@@ -1,5 +1,7 @@
 # 拆盲盒 · 今天吃什么
 
+由 xnwu 制作。
+
 React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
 
 - `pnpm dev`: development server; honors `PORT` (default 3000).
