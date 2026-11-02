@@ -281,8 +281,18 @@ const categories: Category[] = [
   },
 ];
 
+function shuffleArray<T>(items: T[]) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
 function combineChoices<T>(items: T[], modifiers: string[], create: (item: T, modifier: string, index: number) => Choice) {
-  return items.flatMap((item, itemIndex) => modifiers.map((modifier, modifierIndex) => create(item, modifier, itemIndex * modifiers.length + modifierIndex)));
+  const combinations = items.flatMap((item, itemIndex) => modifiers.map((modifier, modifierIndex) => create(item, modifier, itemIndex * modifiers.length + modifierIndex)));
+  return shuffleArray(combinations);
 }
 
 const richCategories: Category[] = categories.map((category) => {
@@ -319,11 +329,11 @@ const richCategories: Category[] = categories.map((category) => {
         "米饭 + 家常豆腐 + 清炒娃娃菜",
       ];
       const styles = ["家常均衡", "清爽不腻", "暖胃满足", "下班省心", "周末丰盛", "想吃中式", "荤素刚好", "简单开饭", "给自己加菜"];
-      return Array.from({ length: 54 }, (_, index) => {
-        const breakfast = breakfasts[index % breakfasts.length];
-        const lunch = lunches[(index * 2) % lunches.length];
-        const dinner = dinners[(index * 4 + 1) % dinners.length];
-        const style = styles[index % styles.length];
+      return Array.from({ length: 66 }, (_, index) => {
+        const breakfast = breakfasts[(index * 5 + Math.floor(index / 6)) % breakfasts.length];
+        const lunch = lunches[(index * 4 + Math.floor(index / 3)) % lunches.length];
+        const dinner = dinners[(index * 7 + Math.floor(index / 5)) % dinners.length];
+        const style = styles[(index * 5 + Math.floor(index / 9)) % styles.length];
         return {
           title: `今日三餐 · ${style} ${String(index + 1).padStart(2, "0")}`,
           subtitle: "一次拆出完整的一日菜单",
@@ -347,7 +357,7 @@ const richCategories: Category[] = categories.map((category) => {
         { name: "海盐蓝卫衣", top: "海盐蓝宽松卫衣", bottom: "深灰运动长裙", shoes: "灰白跑鞋", accessory: "奶油色棒球帽", palette: ["#B5D0DD", "#62666B", "#EDE4D5"] },
         { name: "焦糖棕风衣", top: "焦糖棕短风衣", bottom: "深蓝九分裤", shoes: "酒红色短靴", accessory: "格纹围巾", palette: ["#B77F53", "#31445E", "#75473F"] },
       ];
-      const occasions = ["去咖啡店", "轻松通勤", "周末散步", "约会见面", "看展拍照", "雨天出门"];
+      const occasions = ["去咖啡店", "轻松通勤", "周末散步", "约会见面", "看展拍照", "雨天出门", "日常逛街", "短途旅行"];
       return combineChoices(looks, occasions, (look, occasion, index) => ({
         title: `${look.name} · ${occasion}`,
         subtitle: "今日配色公式",
@@ -360,7 +370,7 @@ const richCategories: Category[] = categories.map((category) => {
     }
     if (category.id === "play") {
       const activities = ["城市散步", "做一杯饮料", "看一集轻松的剧", "拼一幅小拼图", "整理照片", "听一张专辑", "去菜市场逛逛", "做十分钟拉伸", "给朋友发语音"];
-      const moods = ["想换换空气", "只剩一点电量", "需要安静下来", "想找回灵感", "想要被陪伴", "想奖励自己"];
+      const moods = ["想换换空气", "只剩一点电量", "需要安静下来", "想找回灵感", "想要被陪伴", "想奖励自己", "想动一动"];
       return combineChoices(activities, moods, (activity, mood, index) => ({
         title: `${activity} · ${mood}`,
         subtitle: "给自己安排一小段快乐",
@@ -372,7 +382,7 @@ const richCategories: Category[] = categories.map((category) => {
     }
     if (category.id === "drink") {
       const drinks = ["桂花乌龙气泡水", "海盐焦糖拿铁", "蜂蜜柚子茶", "草莓酸奶冰", "青提茉莉冰茶", "可可燕麦奶", "柠檬薄荷水", "黑糖姜奶", "芒果酸奶杯"];
-      const moments = ["早起慢慢醒", "午后提提神", "下班奖励自己", "读书配一杯", "宅家看剧时", "想喝点清爽的"];
+      const moments = ["早起慢慢醒", "午后提提神", "下班奖励自己", "读书配一杯", "宅家看剧时", "想喝点清爽的", "运动后补一杯"];
       return combineChoices(drinks, moments, (drink, moment, index) => ({
         title: `${drink} · ${moment}`,
         subtitle: "今天的杯子里有一点好运",
@@ -384,7 +394,7 @@ const richCategories: Category[] = categories.map((category) => {
     }
     if (category.id === "home") {
       const tasks = ["整理一个抽屉", "换一套床品", "做一份明天早餐", "擦亮一扇窗", "给植物浇水", "清空一个购物车", "把衣服分好类", "整理手机相册", "洗好明天要穿的衣服"];
-      const versions = ["只做十分钟", "配一首歌完成", "从最小的一角开始", "顺便给自己放水", "完成后立刻休息", "邀请未来的自己帮忙"];
+      const versions = ["只做十分钟", "配一首歌完成", "从最小的一角开始", "顺便给自己放水", "完成后立刻休息", "邀请未来的自己帮忙", "边整理边听播客"];
       return combineChoices(tasks, versions, (task, version, index) => ({
         title: `${task} · ${version}`,
         subtitle: "给生活留一点清爽",
@@ -396,7 +406,7 @@ const richCategories: Category[] = categories.map((category) => {
     }
     if (category.id === "weekend") {
       const places = ["没喝过的咖啡店", "附近的花市", "城市公园", "街角书店", "一条旧街", "周边小展览", "河边步道", "社区菜市场", "郊外小车站"];
-      const routes = ["坐在窗边发会儿呆", "带一束颜色回家", "晒一会儿太阳", "随机翻三本书", "拍三张照片", "给自己买份小甜点"];
+      const routes = ["坐在窗边发会儿呆", "带一束颜色回家", "晒一会儿太阳", "随机翻三本书", "拍三张照片", "给自己买份小甜点", "找一处安静坐下来"];
       return combineChoices(places, routes, (place, route, index) => ({
         title: `${place} · ${route}`,
         subtitle: "从附近开始的小逃离",
@@ -427,7 +437,7 @@ const richCategories: Category[] = categories.map((category) => {
         { name: "《被讨厌的勇气》", type: "心理 / 哲学对话", intro: "通过一场青年与哲人的对话，讨论自由、课题分离与如何活出自己的生活。", reason: "适合总在意别人目光、想重新找回行动感的读者。" },
         { name: "《我与地坛》", type: "散文 / 生命书写", intro: "作者在地坛与岁月相处，写残疾、母亲、死亡，也写活着的细小光亮。", reason: "适合需要安静下来，与自己的生命经验重新相处的时候。" },
       ];
-      const styles = ["温柔入门", "沉浸式阅读", "值得反复回看"];
+      const styles = ["温柔入门", "沉浸式阅读", "值得反复回看", "适合今天细细品"];
       return combineChoices(books, styles, (book, style) => ({
         title: `${book.name} · ${style}`,
         subtitle: book.type,
@@ -447,8 +457,10 @@ const richCategories: Category[] = categories.map((category) => {
       tags: ["今日提示", index % 2 ? "慢慢验证" : "温柔坚定"],
     }));
   })();
-  const choices = category.id === "eat" ? generated : [...category.choices, ...generated];
-  return { ...category, count: `${choices.length} ${category.count.replace(/^\d+\s*/, "")}`, choices };
+  const combinedChoices = category.id === "eat" ? generated : [...category.choices, ...generated];
+  const uniqueChoices = Array.from(new Map(combinedChoices.map((choice) => [choice.title, choice])).values());
+  const choices = shuffleArray(uniqueChoices);
+  return { ...category, count: `${choices.length} 个答案`, choices };
 });
 
 const categoryTone = {
@@ -468,7 +480,7 @@ export default function Home() {
   const [isShaking, setIsShaking] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [usedChoices, setUsedChoices] = useState<Record<CategoryId, string[]>>({
+  const [drawDecks, setDrawDecks] = useState<Record<CategoryId, string[]>>({
     eat: [],
     wear: [],
     play: [],
@@ -498,17 +510,27 @@ export default function Home() {
     setCopied(false);
     window.setTimeout(() => {
       const pool = selectedCategory.choices;
-      const used = usedChoices[selectedCategory.id] ?? [];
-      const fresh = pool.filter((choice) => !used.includes(choice.title));
-      const source = fresh.length > 0 ? fresh : pool;
-      const withoutCurrent = result ? source.filter((choice) => choice.title !== result.title) : source;
-      const candidates = withoutCurrent.length > 0 ? withoutCurrent : source;
-      const next = candidates[Math.floor(Math.random() * candidates.length)] ?? pool[0];
+      const categoryId = selectedCategory.id;
+      let deck = drawDecks[categoryId].filter((title) => pool.some((choice) => choice.title === title));
+
+      if (deck.length === 0) {
+        deck = shuffleArray(pool.map((choice) => choice.title));
+      }
+
+      if (result) {
+        deck = deck.filter((title) => title !== result.title);
+      }
+
+      const nextTitle = deck[0] ?? pool.find((choice) => choice.title !== result?.title)?.title ?? pool[0]?.title;
+      const next = pool.find((choice) => choice.title === nextTitle) ?? pool[0];
+      if (!next) {
+        setIsShaking(false);
+        return;
+      }
+
+      const remainingDeck = deck.filter((title) => title !== next.title);
       setResult(next);
-      setUsedChoices((previous) => ({
-        ...previous,
-        [selectedCategory.id]: fresh.length > 0 ? [...(previous[selectedCategory.id] ?? []), next.title] : [next.title],
-      }));
+      setDrawDecks((previous) => ({ ...previous, [categoryId]: remainingDeck }));
       setIsShaking(false);
     }, 720);
   };
